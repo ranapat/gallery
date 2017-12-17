@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import BootstrapVue from 'bootstrap-vue'
 
-//import Languages from '@/components/Languages'
+import * as config from '@/config'
+import Sidebar from '@/components/Sidebar'
 import mutations from '@/store/mutations'
 import actions from '@/store/actions'
 import getters from '@/store/getters'
@@ -12,13 +13,18 @@ Vue.use(BootstrapVue)
 
 const mockStore = () => {
   const state = {
-    repositories: [],
-    repositoriesLoading: false,
-    repositoriesLoadError: null,
+    data: null,
+    dataLoading: false,
+    dataLoadError: null,
 
-    languages: [],
-    languagesLoading: false,
-    languagesLoadError: null
+    sidebarOpened: true,
+
+    view: config.view.list.key,
+    filter: config.filter.all.key,
+
+    status: '',
+
+    favorites: []
   }
 
   return new Vuex.Store({
@@ -29,96 +35,44 @@ const mockStore = () => {
   })
 }
 
-describe('Languages', () => {
-
-  /*
-  it('has a created hook', () => {
-    expect(typeof Languages.mounted).toBe('undefined')
-  })
-
-  it('renders the correct message and state in initialization', () => {
+describe('Sidebar', () => {
+  it('renders the correct default values for filter and view', () => {
     const store = mockStore()
-    expect(store.state.languagesLoading).toBe(false)
+    expect(store.state.view).toBe('list')
+    expect(store.state.filter).toBe('all')
+    expect(store.state.sidebarOpened).toBe(true)
 
     const vm = new Vue({
-      render: h => h(Languages),
+      render: h => h(Sidebar),
       store,
     }).$mount()
-    expect(store.state.languagesLoading).toBe(false)
-    expect(vm.$el.textContent).toContain('No languages specified')
+
+    expect(store.state.view).toBe('list')
+    expect(store.state.filter).toBe('all')
+    expect(store.state.sidebarOpened).toBe(true)
+    expect(vm.$el.textContent).toContain('Hide')
   })
 
-  it('renders the correct message and state in loading', done => {
+  it('renders the correct default valus for hide', done => {
     const store = mockStore()
-    expect(store.state.languagesLoading).toBe(false)
+    expect(store.state.sidebarOpened).toBe(true)
 
     const vm = new Vue({
-      render: h => h(Languages),
+      render: h => h(Sidebar),
       store,
     }).$mount()
-    expect(store.state.languagesLoading).toBe(false)
 
-    store.state.languagesLoading = true
+    // simulate side close
+    store.state.sidebarOpened = false
+
+    expect(store.state.sidebarOpened).toBe(false)
 
     Vue.nextTick()
       .then(() => {
-        expect(vm.$el.textContent).toContain('Languages loading...')
+        expect(vm.$el.textContent).toContain('Hide')
         done()
       })
       .catch(done)
   })
-
-  it('renders the correct message and state in error', done => {
-    const store = mockStore()
-
-    const vm = new Vue({
-      render: h => h(Languages),
-      store,
-    }).$mount()
-
-    store.state.languagesLoading = false
-    store.state.languagesLoadError = {
-      response: {
-        data: {
-          message: 'error message'
-        }
-      }
-    }
-
-    Vue.nextTick()
-      .then(() => {
-        expect(vm.$el.textContent).toContain('Languages loading error : error message')
-        done()
-      })
-      .catch(done)
-  })
-
-  it('renders the correct message and state in data', done => {
-    const store = mockStore()
-
-    const vm = new Vue({
-      render: h => h(Languages),
-      store,
-    }).$mount()
-
-    store.state.languagesLoading = false
-    store.state.repositories = []
-    store.state.languages = {
-      'c': '123', 'd': '456'
-    }
-
-    Vue.nextTick()
-      .then(() => {
-        expect(vm.$el.textContent).toContain('Name')
-        expect(vm.$el.textContent).toContain('Lines Of Code')
-        expect(vm.$el.textContent).toContain('c')
-        expect(vm.$el.textContent).toContain('d')
-        expect(vm.$el.textContent).toContain('123')
-        expect(vm.$el.textContent).toContain('456')
-        done()
-      })
-      .catch(done)
-  })
-  */
 
 })

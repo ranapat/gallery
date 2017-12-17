@@ -8,7 +8,7 @@
   <div class="list-wrapper">
 
     <div class="row">
-      <div class="col-md-12" v-if="!dataLoading && reduced.length === 0">No data</div>
+      <div class="col-md-12" v-if="!dataLoading && !dataLoadError && reduced.length === 0">No data</div>
       <div class="col-md-12" v-if="dataLoading">Data loading...</div>
       <div class="col-md-12" v-if="dataLoadError">Data loading error : {{ dataLoadError && dataLoadError.response ? dataLoadError.response.data.message : '' }}</div>
     </div>
